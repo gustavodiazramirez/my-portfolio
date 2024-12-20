@@ -1,0 +1,135 @@
+---
+import { Image } from "astro:assets";
+
+const proyectos = [
+  {
+    titulo: "SWAPIT - Aplicación de Intercambio de Ropa",
+    descripcion:
+      "Aplicación para el intercambio rápido de ropa, que incluye funciones de emparejamiento, chat en tiempo real y notificaciones para facilitar la comunicación entre usuarios.",
+    imagen:
+      "https://media.licdn.com/dms/image/v2/D4D05AQGKDEsIRNV_vQ/feedshare-thumbnail_720_1280/feedshare-thumbnail_720_1280/0/1734381632690?e=1735318800&v=beta&t=ydIUsrLpWdNJZX5uvubhr11B11vbkZ_kSWrpeRnzyV4",
+    categoria: "👩‍💻 Desarrollo",
+    tecnologias: ["Nextjs", "Nodejs", "PostgreSQL", "MinIO", "Tailwind"],
+  },
+  {
+    titulo: "Red Impacto - Plataforma de Conexión de Voluntarios",
+    descripcion:
+      "Plataforma que conecta voluntarios con organizaciones utilizando un sistema de puntos que incentiva la participación activa y el intercambio de servicios entre ambos.",
+    imagen: "https://i.ibb.co/bHWYGQL/Thumbnail-1.jpg",
+    categoria: "👩‍💻 Desarrollo",
+    tecnologias: ["React", "Nodejs", "MinIO", "Tailwind"],
+  },
+  {
+    titulo: "IA Tumoral - Herramienta de Detección Temprana de Cáncer",
+    descripcion:
+      "Herramienta web basada en inteligencia artificial para la predicción temprana del cáncer de ovario, reconocida como semifinalista en el programa BRAIN Chile 2024",
+    imagen:
+      "https://i.ibb.co/YQqkPnB/Thumbnail-2.jpg",
+    categoria: "🧬 Investigación y Desarrollo",
+    tecnologias: ["Figma", "Astro", "PostgreSQL", "React", "Tailwind"],
+  },
+];
+---
+
+<section class="animate-blurred-fade-in py-28 px-4 mt-16" id="proyectos">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl md:text-6xl font-bold text-center mb-6 text-white">
+      Proyectos <span
+        class="text-black relative before:content-[''] overflow-hidden before:absolute before:w-full before:h-full before:bg-gradient-to-r before:from-[#FFFE65] before:to-[#F7DF1F] before:rotate-2 mix-blend-lighten before:-z-30 before:top-0"
+      >
+        Destacados
+      </span>
+    </h2>
+    <p class="text-center text-xl text-primary mb-20 max-w-2xl mx-auto font-semibold">
+      Explora algunos de mis trabajos recientes en desarrollo web y móvil, tanto personales como colaborativos.
+    </p>
+    <div class="space-y-4 flex flex-col gap-4 grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto">
+      {proyectos.map((proyecto) => (
+        <div class=" rounded-2xl shadow-lg hover:shadow-primary overflow-hidden transition-all duration-500 hover:shadow-sm hover:-translate-y-1 border border-slate-800 moving-border">
+          <div class="flex flex-col md:flex-row">
+            <!-- Texto -->
+            <div class="p-6 md:w-1/2 flex flex-col justify-between">
+              <div>
+                <h3 class="text-xl font-semibold mb-2 text-white">
+                  {proyecto.titulo}
+                </h3>
+                <p class="text-slate-300 mb-4 line-clamp-5">
+                  {proyecto.descripcion}
+                </p>
+              </div>
+
+              <!-- Tecnologías al final -->
+              <div class="flex flex-wrap gap-2 mt-auto">
+                {proyecto.tecnologias.map((tech) => (
+                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-200">
+                    <img
+                      src={`src/icons/${tech.toLowerCase()}.svg`}
+                      alt={`${tech} icon`}
+                      class="w-4 h-4 mr-1"
+                    />
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <!-- Imagen -->
+            <div class="relative md:w-1/2">
+              <Image
+                src={proyecto.imagen}
+                alt={`Miniatura de ${proyecto.titulo}`}
+                width={500}
+                height={400}
+                class="w-full h-full object-cover"
+              />
+              <div class="absolute top-4 left-4 bg-black rounded-full px-3 py-1 text-sm font-semibold text-slate-200">
+                {proyecto.categoria}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 640px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .moving-border {
+    position: relative;
+    z-index: 0;
+  }
+
+  .moving-border::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: -4px;
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-primary-light) 50%, var(--color-primary) 100%);
+    border-radius: inherit;
+    animation: rotate 4s linear infinite;
+  }
+
+  .moving-border::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    background: black;
+    border-radius: inherit;
+  }
+
+  @keyframes rotate {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+</style>

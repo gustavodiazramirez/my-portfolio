@@ -46,47 +46,48 @@ const proyectos = [
     <div class="space-y-4 flex flex-col gap-4 grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto">
       {proyectos.map((proyecto) => (
         <div class=" rounded-2xl shadow-lg hover:shadow-primary overflow-hidden transition-all duration-500 hover:shadow-sm hover:-translate-y-1 border border-slate-800 moving-border">
-          <div class="flex flex-col md:flex-row">
-            <!-- Texto -->
-            <div class="p-6 md:w-1/2 flex flex-col justify-between">
-              <div>
-                <h3 class="text-xl font-semibold mb-2 text-white">
-                  {proyecto.titulo}
-                </h3>
-                <p class="text-slate-300 mb-4 line-clamp-5">
-                  {proyecto.descripcion}
-                </p>
-              </div>
+          <div class="flex flex-col-reverse md:flex-row">
+  <!-- Texto -->
+  <div class="p-6 md:w-1/2 flex flex-col justify-between">
+    <div>
+      <h3 class="text-xl font-semibold mb-2 text-white">
+        {proyecto.titulo}
+      </h3>
+      <p class="text-slate-300 mb-4 line-clamp-5">
+        {proyecto.descripcion}
+      </p>
+    </div>
 
-              <!-- Tecnologías al final -->
-              <div class="flex flex-wrap gap-2 mt-auto">
-                {proyecto.tecnologias.map((tech) => (
-                  <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-200">
-                    <img
-                      src={`/icons/${tech.toLowerCase()}.svg`}
-                      alt={`${tech} icon`}
-                      class="w-4 h-4 mr-1"
-                    />
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </div>
+    <!-- Tecnologías al final -->
+    <div class="flex flex-wrap gap-2 mt-auto">
+      {proyecto.tecnologias.map((tech) => (
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-800 text-slate-200">
+          <img
+            src={`/icons/${tech.toLowerCase()}.svg`}
+            alt={`${tech} icon`}
+            class="w-4 h-4 mr-1"
+          />
+          {tech}
+        </span>
+      ))}
+    </div>
+  </div>
 
-            <!-- Imagen -->
-            <div class="relative md:w-1/2">
-              <Image
-                src={proyecto.imagen}
-                alt={`Miniatura de ${proyecto.titulo}`}
-                width={500}
-                height={400}
-                class="w-full h-full object-cover"
-              />
-              <div class="absolute top-4 left-4 bg-black rounded-full px-3 py-1 text-sm font-semibold text-slate-200">
-                {proyecto.categoria}
-              </div>
-            </div>
-          </div>
+  <!-- Imagen -->
+  <div class="relative md:w-1/2">
+    <Image
+      src={proyecto.imagen}
+      alt={`Miniatura de ${proyecto.titulo}`}
+      width={500}
+      height={400}
+      class="w-full h-full object-cover"
+    />
+    <div class="absolute top-4 left-4 bg-black rounded-full px-3 py-1 text-sm font-semibold text-slate-200">
+      {proyecto.categoria}
+    </div>
+  </div>
+</div>
+
         </div>
       ))}
     </div>

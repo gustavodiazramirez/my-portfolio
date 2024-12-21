@@ -70,7 +70,7 @@ export default function SkillsSection() {
               Habilidades
             </span>
           </h3>
-          <p className="text-lg text-primary items-center sm:px-12 md:px-56 font-semibold mt-4 mb-12 sm:mb-24">
+          <p className="text-xl text-primary items-center sm:px-12 md:px-56 font-semibold mt-4 mb-12 sm:mb-24">
             Estas son algunas de las habilidades que he adquirido a lo largo de
             mi carrera profesional.
           </p>

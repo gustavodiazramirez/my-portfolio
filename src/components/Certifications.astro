@@ -1,0 +1,52 @@
+---
+import { certifications } from "@lib/certifications";
+import InstitutionCard from "@components/InstitutionCard.jsx";
+
+type Certification = {
+  institucion: string;
+};
+
+type Groups = {
+  [key: string]: Certification[];
+};
+
+const groupedCertifications = certifications.reduce(
+  (groups: Groups, cert: Certification) => {
+    const institution = cert.institucion;
+    if (!groups[institution]) {
+      groups[institution] = [];
+    }
+    groups[institution].push(cert);
+    return groups;
+  },
+  {}
+);
+---
+<section id="certifications" class="py-36 flex justify-center items-center bg-primary ">
+    <div class="w-full max-w-5xl px-8 sm:px-16 mx-auto">
+        <div class="text-center mb-12">
+          <h3 class="text-3xl sm:text-4xl md:text-6xl font-bold text-black">
+            Mis Certificaciones
+          </h3>
+          <p class="text-lg text-black items-center sm:px-12 md:px-56 font-semibold mt-4 mb-12 sm:mb-24">
+            Aquí encontrarás las certificaciones que he obtenido a lo largo de mi carrera profesional.
+          </p>
+        </div>
+  
+      {/* Sección de tarjetas */}
+      <div class="grid grid-cols-2 md:grid-cols-7 gap-4">
+        {
+          Object.keys(groupedCertifications).map((institution) => (
+            <div data-key={institution} class="w-full">
+              <InstitutionCard
+                institution={institution}
+                certs={groupedCertifications[institution]}
+                client:load
+              />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+  

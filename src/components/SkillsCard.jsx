@@ -44,7 +44,7 @@ function SkillCard({ skill }) {
     <div className="flex flex-col items-center">
       {/* Card */}
       <div
-        className="bg-black text-white border border-gray-800 rounded-3xl p-6 shadow-md cursor-pointer"
+        className="bg-black text-white border border-gray-800 rounded-3xl p-4 shadow-md cursor-pointer"
         onClick={toggleSkillDetails}
       >
         <img
@@ -61,7 +61,7 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
-      className="animate-blurred-fade-in py-12 sm:py-16 lg:py-36 flex justify-center items-center mb-16"
+      className="animate-blurred-fade-in py-12 sm:py-16 md:py-36 flex justify-center items-center mb-16"
     >
       <div className="w-full max-w-5xl px-8 sm:px-16 mx-auto">
         <div className="text-center mb-12">
@@ -77,7 +77,7 @@ export default function SkillsSection() {
         </div>
 
         {/* Sección de tarjetas */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 justify-center items-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-8 justify-center items-center">
           {skills.map((skill) => (
             <SkillCard key={skill.name} skill={skill} />
           ))}

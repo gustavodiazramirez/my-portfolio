@@ -7,8 +7,9 @@ const proyectos = [
     descripcion:
       "Aplicación para el intercambio rápido de ropa, que incluye funciones de emparejamiento, chat en tiempo real y notificaciones para facilitar la comunicación entre usuarios.",
     imagen:
-      "https://media.licdn.com/dms/image/v2/D4D05AQGKDEsIRNV_vQ/feedshare-thumbnail_720_1280/feedshare-thumbnail_720_1280/0/1734381632690?e=1735318800&v=beta&t=ydIUsrLpWdNJZX5uvubhr11B11vbkZ_kSWrpeRnzyV4",
+      "http://surl.li/fkrzsp",
     categoria: "👩‍💻 Desarrollo",
+    link: "https://www.linkedin.com/posts/gustavo-d%C3%ADaz-ram%C3%ADrez-136746319_nodejs-expressjs-jwt-activity-7274523974452027392-4hBo?utm_source=share&utm_medium=member_desktop",
     tecnologias: ["Nextjs", "Nodejs", "PostgreSQL", "MinIO", "Tailwind"],
   },
   {
@@ -17,6 +18,7 @@ const proyectos = [
       "Plataforma que conecta voluntarios con organizaciones utilizando un sistema de puntos que incentiva la participación activa y el intercambio de servicios entre ambos.",
     imagen: "https://i.ibb.co/bHWYGQL/Thumbnail-1.jpg",
     categoria: "👩‍💻 Desarrollo",
+    link: "https://www.linkedin.com/posts/gustavo-d%C3%ADaz-ram%C3%ADrez-136746319_softwaredevelopment-uxdesign-nodejs-activity-7277096178343657473-TfCF?utm_source=share&utm_medium=member_desktop",
     tecnologias: ["React", "Nodejs", "MinIO", "Tailwind"],
   },
   {
@@ -25,13 +27,14 @@ const proyectos = [
       "Herramienta web basada en inteligencia artificial para la predicción temprana del cáncer de ovario, reconocida como semifinalista en el programa BRAIN Chile 2024.",
     imagen:
       "https://i.ibb.co/YQqkPnB/Thumbnail-2.jpg",
-    categoria: "🧬 Investigación y Desarrollo",
+      categoria: "🧬 Investigación y Desarrollo",
+      link: "https://www.linkedin.com/posts/ciencia-2030-ufro_felicitamos-al-equipo-de-estudiantes-esteban-ugcPost-7214262219021135872-wUgt?utm_source=share&utm_medium=member_desktop",
     tecnologias: ["Figma", "Astro", "PostgreSQL", "React", "Tailwind"],
   },
 ];
 ---
 
-<section class="animate-blurred-fade-in py-28 px-4 mt-16" id="proyectos">
+<section class="animate-blurred-fade-in py-28 px-4 md:mt-16" id="proyectos">
   <div class="max-w-7xl mx-auto">
     <h2 class="text-3xl md:text-6xl font-bold text-center mb-6 text-white">
       Proyectos <span
@@ -40,7 +43,7 @@ const proyectos = [
         Destacados
       </span>
     </h2>
-    <p class="text-center text-xl text-primary mb-20 max-w-2xl mx-auto font-semibold">
+    <p class="text-center md:text-xl text-primary mb-20 max-w-2xl text-sm mx-auto font-semibold px-8 md:px-0">
       Explora algunos de mis trabajos recientes en desarrollo web y móvil, tanto personales como colaborativos.
     </p>
     <div class="space-y-4 flex flex-col gap-4 grid-cols-1 md:grid-cols-2 max-w-5xl mx-auto">
@@ -56,6 +59,7 @@ const proyectos = [
       <p class="text-slate-300 mb-4 line-clamp-5">
         {proyecto.descripcion}
       </p>
+      <a href={proyecto.link} target="_blank" class="text-primary">Ver más detalles</a>
     </div>
 
     <!-- Tecnologías al final -->

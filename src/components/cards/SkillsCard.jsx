@@ -7,13 +7,17 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 const skills = [
   { name: "JavaScript", icon: "javascript" },
   { name: "React", icon: "react" },
-  { name: "Node.js", icon: "nodejs" },
+  { name: "GitHub", icon: "github" },
   { name: "TailwindCSS", icon: "tailwind" },
   { name: "Figma", icon: "figma" },
   { name: "PostgresSQL", icon: "postgresql" },
   { name: "Next", icon: "nextjs" },
   { name: "Minio", icon: "minio" },
   { name: "Astro", icon: "astro" },
+  { name: "NestJS", icon: "nestjs" },
+  { name: "Typescript", icon: "typescript" },
+  { name: "GitLab", icon: "gitlab" },
+
 ];
 
 function SkillCard({ skill }) {
@@ -44,7 +48,7 @@ function SkillCard({ skill }) {
     <div className="flex flex-col items-center">
       {/* Card */}
       <div
-        className="bg-black text-white border border-gray-800 rounded-3xl p-4 shadow-md cursor-pointer"
+        className="bg-black text-white border border-gray-800 rounded-3xl p-4 shadow-md relative group"
         onClick={toggleSkillDetails}
       >
         <img
@@ -52,6 +56,11 @@ function SkillCard({ skill }) {
           alt={skill.name}
           className="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24"
         />
+        {/* Tooltip */}
+        <div className="absolute -bottom-12 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-3 py-2 rounded-lg text-sm font-medium opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap z-10">
+          {skill.name}
+          <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-gray-900 rotate-45"></div>
+        </div>
       </div>
     </div>
   );
@@ -71,8 +80,7 @@ export default function SkillsSection() {
             </span>
           </h3>
           <p className="text-sm md:text-xl text-primary items-center px-12 md:px-56 font-semibold mt-8 mb-12 sm:mb-24">
-            Estas son algunas de las habilidades que he adquirido a lo largo de
-            mi carrera profesional.
+            Tecnologías y herramientas de mi stack de desarrollo.
           </p>
         </div>
 

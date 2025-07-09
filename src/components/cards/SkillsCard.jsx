@@ -70,7 +70,7 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
-      className="animate-blurred-fade-in py-12 sm:py-16 md:py-36 flex justify-center items-center mb-16"
+      className="animate-blurred-fade-in py-12 sm:py-16 md:py-36 flex justify-center items-center mb-16 min-h-screen"
     >
       <div className="w-full max-w-5xl px-8 sm:px-16 mx-auto">
         <div className="text-center mb-12">

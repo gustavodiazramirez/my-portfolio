@@ -1,0 +1,45 @@
+---
+---
+<nav id="navbar-flotante" class="fixed top-0 left-0 w-full z-50 opacity-0 pointer-events-none transition-opacity duration-300 backdrop-blur bg-black/60 py-3">
+  <div class="max-w-[67rem] mx-auto flex flex-col md:flex-row items-center justify-between px-6">
+    <!-- Izquierda: Nombre y rol (solo md+) -->
+    <div class="flex-col items-start hidden md:flex">
+      <span class="font-bold text-base text-white">Gustavo Díaz</span>
+      <span class="text-xs text-primary font-semibold">Estudiante de Ingeniería en Informática</span>
+    </div>
+    <!-- Centro: Navegación solo texto, centrado en mobile -->
+    <ul class="flex gap-8 text-base font-semibold text-white justify-center w-full md:w-auto my-2 md:my-0">
+      <li>
+        <a href="#proyectos" class="hover:underline">Proyectos</a>
+      </li>
+      <li>
+        <a href="#skills" class="hover:underline">Skills</a>
+      </li>
+      <li>
+        <a href="#certificaciones" class="hover:underline">Certificaciones</a>
+      </li>
+    </ul>
+    <!-- Derecha: Redes sociales (solo md+) -->
+    <div class="items-center gap-4 hidden md:flex">
+      <a href="https://www.linkedin.com/in/gdiaz14/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <img src="/icons/linkedin.svg" alt="LinkedIn" class="w-7 h-7 hover:scale-110 transition-transform" />
+      </a>
+      <a href="https://github.com/gustavodiazramirez" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <img src="/icons/github.svg" alt="GitHub" class="w-6 h-6 hover:scale-110 transition-transform" />
+      </a>
+    </div>
+  </div>
+</nav>
+
+<script is:inline>
+  window.addEventListener('scroll', () => {
+    const navbar = document.getElementById('navbar-flotante');
+    if (window.scrollY > 100) {
+      navbar.classList.add('opacity-100', 'pointer-events-auto');
+      navbar.classList.remove('opacity-0', 'pointer-events-none');
+    } else {
+      navbar.classList.remove('opacity-100', 'pointer-events-auto');
+      navbar.classList.add('opacity-0', 'pointer-events-none');
+    }
+  });
+</script> 

@@ -1,5 +1,6 @@
 ---
 import NavbarFlotante from "@/components/NavbarFlotante.astro";
+import Analytics from "@vercel/analytics/astro";
 ---
 
 <!doctype html>
@@ -14,8 +15,9 @@ import NavbarFlotante from "@/components/NavbarFlotante.astro";
     <div
       class="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:14px_24px]"
     >
-    </div></body
-  >
+    </div>
+    <Analytics />
+  </body>
   <div class="relative z-10">
     <NavbarFlotante />
     <slot />

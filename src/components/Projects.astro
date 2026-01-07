@@ -2,6 +2,34 @@
 import { Image } from "astro:assets";
 
 const proyectos = [
+      {
+    titulo: "Plataforma de Gestión Prehospitalaria y KPIs",
+    descripcion:
+      "Aplicación para la gestión prehospitalaria del SAMU Araucanía Sur, orientada a la centralización y visualización de KPIs operacionales del Centro Regulador, con generación de reportes automatizados en PDF y Excel. Moderniza procesos manuales y sistemas legados mediante una arquitectura basada en NestJS, Next.js, PostgreSQL y un microservicio ETL en Python.",
+    imagen:
+      "https://i.ibb.co/b51kwqL6/interfaz-modo-claro.png",
+    categoria: "🧬 Investigación y Desarrollo",
+    tecnologias: ["Nestjs", "Nextjs", "Tailwind", "PostgreSQL", "Nodejs", "React", "Docker", "Gitlab"],
+  },
+    {
+    titulo: "Plataforma IoT para Rehabilitación Pediátrica",
+    descripcion:
+      "Aplicación para la rehabilitación pediátrica con órtesis inteligentes IoT, que integra telemetría en tiempo real, dashboards clínicos y visualización de datos para el seguimiento del tratamiento.",
+    imagen:
+      "https://i.ibb.co/4R57RNjb/Copia-de-PROYECTO-DE-SENSORIZACI-N-DE-RTESIS-DE-MIEMBRO-SUPERIOR.jpg",
+    categoria: "🧬 Investigación y Desarrollo",
+    tecnologias: ["Vue", "Nestjs", "Tailwind", "PostgreSQL", "Nodejs", "React", "Gitlab", "Docker"],
+  },
+  {
+    titulo: "Sistema de Monitoreo para Puntos de Reciclaje",
+    descripcion:
+      "Aplicación para el monitoreo inteligente de puntos de reciclaje, que permite gestionar contenedores en tiempo real mediante sensores IoT, alertas automáticas y visualización de datos históricos.",
+    imagen:
+      "https://media.licdn.com/dms/image/v2/D4E22AQHTSxQzezzSvw/feedshare-shrink_2048_1536/B4EZRBGaFIHsAo-/0/1736258987438?e=1769644800&v=beta&t=AU57X2moU0aqkXdkZgCVZY4_hVqUz8Ap9t8XrZ4OBss",
+    categoria: "🧬 Investigación y Desarrollo",
+    link: "https://www.linkedin.com/posts/gdiaz14_internetdelascosas-iot-esp32-activity-7282398027258949633-b20q?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFC70ToB1pNYpZanUmtG3Lu49BcORd_RdGs",
+    tecnologias: ["Nextjs", "Nodejs", "Tailwind", "React", "Gitlab"],
+  },
   {
     titulo: "SWAPIT - Aplicación de Intercambio de Ropa",
     descripcion:
@@ -10,7 +38,7 @@ const proyectos = [
       "https://i.ibb.co/tZ5HPyF/1734381632690.jpg",
     categoria: "👩‍💻 Desarrollo",
     link: "https://www.linkedin.com/posts/gdiaz14_nodejs-expressjs-jwt-activity-7274523974452027392-d8Ik",
-    tecnologias: ["Nextjs", "Nodejs", "PostgreSQL", "MinIO", "Tailwind"],
+    tecnologias: ["Nextjs", "Nodejs", "PostgreSQL", "MinIO", "Tailwind", "Docker", "Gitlab"],
   },
   {
     titulo: "Red Impacto - Plataforma de Conexión de Voluntarios",
@@ -19,7 +47,7 @@ const proyectos = [
     imagen: "https://i.ibb.co/bHWYGQL/Thumbnail-1.jpg",
     categoria: "👩‍💻 Desarrollo",
     link: "https://www.linkedin.com/posts/gdiaz14_softwaredevelopment-uxdesign-nodejs-activity-7277096178343657473-S8g-?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFC70ToB1pNYpZanUmtG3Lu49BcORd_RdGs",
-    tecnologias: ["React", "Nodejs", "MinIO", "Tailwind"],
+    tecnologias: ["React", "Nodejs", "MinIO", "Tailwind", "Gitlab"],
   },
   {
     titulo: "IA Tumoral - Herramienta de Detección Temprana de Cáncer",
@@ -29,7 +57,7 @@ const proyectos = [
       "https://i.ibb.co/YQqkPnB/Thumbnail-2.jpg",
       categoria: "🧬 Investigación y Desarrollo",
       link: "https://www.linkedin.com/posts/ciencia-2030-ufro_felicitamos-al-equipo-de-estudiantes-esteban-ugcPost-7214262219021135872-wUgt?utm_source=share&utm_medium=member_desktop",
-    tecnologias: ["Figma", "Astro", "PostgreSQL", "React", "Tailwind"],
+    tecnologias: ["Figma", "Astro", "PostgreSQL", "React", "Tailwind", "Docker", "Gitlab"],
   },
 ];
 ---
@@ -56,10 +84,12 @@ const proyectos = [
       <h3 class="text-xl font-semibold mb-2 text-white">
         {proyecto.titulo}
       </h3>
-      <p class="text-slate-300 mb-4 line-clamp-5">
+      <p class="text-slate-300 mb-4 line-clamp-8 text-justify mr-3">
         {proyecto.descripcion}
       </p>
-      <a href={proyecto.link} target="_blank" class="text-primary">Ver más detalles</a>
+      {proyecto.link && (
+        <a href={proyecto.link} target="_blank" class="text-primary">Ver más detalles</a>
+      )}
     </div>
 
     <!-- Tecnologías al final -->
@@ -78,7 +108,7 @@ const proyectos = [
   </div>
 
   <!-- Imagen -->
-  <div class="relative md:w-1/2">
+  <div class="relative md:w-1/2 h-64 md:h-80">
     <Image
       src={proyecto.imagen}
       alt={`Miniatura de ${proyecto.titulo}`}

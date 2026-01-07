@@ -1,5 +1,11 @@
 export const certifications=[
     {
+      titulo: "Creación de agentes de IA con n8n",
+      institucion: "LinkedIn",
+      aptitudes: ["Agentes inteligentes", "n8n", "Desarrollo de Software con IA"],
+      url: "https://www.linkedin.com/learning/certificates/eb0d4e35e48135c9e19d10be845e0c94a0354df199213ee03f4283e80ad3625b",
+    },
+  {
       titulo: "Aprende semántica web",
       institucion: "LinkedIn",
       aptitudes: ["HTML semántico"],

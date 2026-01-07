@@ -1,23 +1,23 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 // Datos de habilidades
 const skills = [
+  { name: "NodeJS", icon: "nodejs" },
   { name: "JavaScript", icon: "javascript" },
+  { name: "Typescript", icon: "typescript" },
   { name: "React", icon: "react" },
   { name: "GitHub", icon: "github" },
-  { name: "TailwindCSS", icon: "tailwind" },
-  { name: "Figma", icon: "figma" },
-  { name: "PostgresSQL", icon: "postgresql" },
-  { name: "Next", icon: "nextjs" },
-  { name: "Minio", icon: "minio" },
-  { name: "Astro", icon: "astro" },
-  { name: "NestJS", icon: "nestjs" },
-  { name: "Typescript", icon: "typescript" },
   { name: "GitLab", icon: "gitlab" },
-
+  { name: "Figma", icon: "figma" },
+  { name: "TailwindCSS", icon: "tailwind" },
+  { name: "Minio", icon: "minio" },
+  { name: "PostgresSQL", icon: "postgresql" },
+  { name: "Astro", icon: "astro" },
+  { name: "Next", icon: "nextjs" },
+  { name: "NestJS", icon: "nestjs" },
+  { name: "Docker", icon: "docker" },
 ];
 
 function SkillCard({ skill }) {

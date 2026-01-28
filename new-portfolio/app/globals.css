@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+:root {
+  --background: 255 255 255;
+  --foreground: 23 23 23;
+  --card: 255 255 255;
+  --card-foreground: 23 23 23;
+  --primary: 37 99 235;
+  --primary-foreground: 255 255 255;
+  --secondary: 243 244 246;
+  --secondary-foreground: 23 23 23;
+  --muted: 243 244 246;
+  --muted-foreground: 107 114 128;
+  --accent: 243 244 246;
+  --accent-foreground: 23 23 23;
+  --border: 229 231 235;
+  --ring: 37 99 235;
+}
+
+.dark {
+  --background: 9 9 11;
+  --foreground: 250 250 250;
+  --card: 24 24 27;
+  --card-foreground: 250 250 250;
+  --primary: 59 130 246;
+  --primary-foreground: 255 255 255;
+  --secondary: 39 39 42;
+  --secondary-foreground: 250 250 250;
+  --muted: 39 39 42;
+  --muted-foreground: 161 161 170;
+  --accent: 39 39 42;
+  --accent-foreground: 250 250 250;
+  --border: 39 39 42;
+  --ring: 59 130 246;
+}
+
+@theme inline {
+  --color-background: rgb(var(--background));
+  --color-foreground: rgb(var(--foreground));
+  --color-card: rgb(var(--card));
+  --color-card-foreground: rgb(var(--card-foreground));
+  --color-primary: rgb(var(--primary));
+  --color-primary-foreground: rgb(var(--primary-foreground));
+  --color-secondary: rgb(var(--secondary));
+  --color-secondary-foreground: rgb(var(--secondary-foreground));
+  --color-muted: rgb(var(--muted));
+  --color-muted-foreground: rgb(var(--muted-foreground));
+  --color-accent: rgb(var(--accent));
+  --color-accent-foreground: rgb(var(--accent-foreground));
+  --color-border: rgb(var(--border));
+  --color-ring: rgb(var(--ring));
+  --font-sans: var(--font-manrope);
+}
+
+body {
+  font-family: var(--font-manrope), system-ui, sans-serif;
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+}
+
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  33% {
+    transform: translate(30px, -50px) scale(1.1);
+  }
+  66% {
+    transform: translate(-20px, 20px) scale(0.9);
+  }
+}
+
+.animate-blob {
+  animation: blob 20s infinite ease-in-out;
+}
+
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+
+.animation-delay-6000 {
+  animation-delay: 6s;
+}

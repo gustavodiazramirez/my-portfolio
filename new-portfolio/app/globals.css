@@ -15,6 +15,10 @@
   --accent-foreground: 23 23 23;
   --border: 229 231 235;
   --ring: 37 99 235;
+  --blob-1: 191 219 254;
+  --blob-2: 191 219 254;
+  --blob-3: 191 219 254;
+  --blob-4: 191 219 254;
 }
 
 .dark {
@@ -32,9 +36,13 @@
   --accent-foreground: 250 250 250;
   --border: 39 39 42;
   --ring: 59 130 246;
+  --blob-1: 37 99 235;
+  --blob-2: 37 99 235;
+  --blob-3: 37 99 235;
+  --blob-4: 37 99 235;
 }
 
-@theme inline {
+@theme {
   --color-background: rgb(var(--background));
   --color-foreground: rgb(var(--foreground));
   --color-card: rgb(var(--card));
@@ -49,6 +57,7 @@
   --color-accent-foreground: rgb(var(--accent-foreground));
   --color-border: rgb(var(--border));
   --color-ring: rgb(var(--ring));
+  --color-blob: rgb(var(--blob-1));
   --font-sans: var(--font-manrope);
 }
 

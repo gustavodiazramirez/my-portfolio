@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${manrope.variable} antialiased relative`}>
+      <body className={`${manrope.variable} antialiased relative bg-background`}>
         {/* Animated Background */}
         <div className="fixed inset-0 -z-10 overflow-hidden">
           <div className="absolute inset-0 bg-background" />

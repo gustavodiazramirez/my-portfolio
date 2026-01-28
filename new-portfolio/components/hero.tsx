@@ -92,7 +92,7 @@ const Hero = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="w-full sm:w-auto bg-primary text-primary-foreground px-8 py-3 rounded-full hover:opacity-90 transition-all duration-300 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl"
+              className="w-full sm:w-auto bg-primary text-primary-foreground px-8 py-3 rounded-full hover:opacity-90 transition-all duration-300 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl cursor-pointer"
             >
               Conocer más sobre mí
             </motion.a>
@@ -101,7 +101,7 @@ const Hero = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="w-full sm:w-auto bg-transparent text-foreground border-2 border-border px-8 py-3 rounded-full hover:bg-accent hover:border-primary transition-all duration-300 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl"
+              className="w-full sm:w-auto bg-transparent text-foreground border-2 border-border px-8 py-3 rounded-full hover:bg-accent hover:border-primary transition-all duration-300 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl cursor-pointer"
             >
               Ver CV
             </motion.button>

@@ -7,15 +7,15 @@ import { motion } from "framer-motion";
 const AboutMe = () => {
   const images = [
     {
-      src: "/about-me/certificado-titulo.jpg",
+      src: "/about-me/certificado-titulo.webp",
       alt: "Certificado de título como Ingeniero en Informática",
     },
     {
-      src: "/about-me/presentacion.jpg",
+      src: "/about-me/presentacion.webp",
       alt: "Defensa de titulo",
     },
     {
-      src: "/about-me/titulado.jpg",
+      src: "/about-me/titulado.webp",
       alt: "Foto de titulación",
     },
   ];

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { MediaItem } from "./types";
@@ -11,6 +11,8 @@ interface MediaCarouselProps {
 }
 
 export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  
   const autoplayRef = useRef(
     Autoplay({ delay: 4000, stopOnInteraction: false })
   );
@@ -42,14 +44,41 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
     if (!emblaApi || !thumbsApi) return;
     const selected = emblaApi.selectedScrollSnap();
     thumbsApi.scrollTo(selected);
+    setSelectedIndex(selected);
   }, [emblaApi, thumbsApi]);
 
   useEffect(() => {
     if (!emblaApi) return;
-    onSelect();
-    emblaApi.on("select", onSelect);
-    emblaApi.on("reInit", onSelect);
-  }, [emblaApi, onSelect]);
+    
+    const updateSelectedIndex = () => {
+      setSelectedIndex(emblaApi.selectedScrollSnap());
+    };
+    
+    updateSelectedIndex();
+    emblaApi.on("select", updateSelectedIndex);
+    emblaApi.on("reInit", updateSelectedIndex);
+    
+    return () => {
+      emblaApi.off("select", updateSelectedIndex);
+      emblaApi.off("reInit", updateSelectedIndex);
+    };
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi || !thumbsApi) return;
+    
+    const syncThumbnails = () => {
+      const selected = emblaApi.selectedScrollSnap();
+      thumbsApi.scrollTo(selected);
+    };
+    
+    syncThumbnails();
+    emblaApi.on("select", syncThumbnails);
+    
+    return () => {
+      emblaApi.off("select", syncThumbnails);
+    };
+  }, [emblaApi, thumbsApi]);
 
   // Manejar videos
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -162,9 +191,13 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
               <button
                 key={index}
                 onClick={() => onThumbClick(index)}
-                className="flex-[0_0_30%] min-w-0 relative group cursor-pointer"
+                className="flex-[0_0_30%] min-w-0 relative cursor-pointer"
               >
-                <div className="aspect-video rounded-lg overflow-hidden border-2 border-border transition-all duration-300 group-hover:border-primary shadow-md hover:shadow-lg">
+                <div className={`aspect-video rounded-lg overflow-hidden border-2 transition-all duration-300 shadow-md hover:shadow-lg ${
+                  selectedIndex === index
+                    ? "border-primary"
+                    : "border-border hover:border-primary"
+                }`}>
                   <div className="relative w-full h-full bg-linear-to-br from-primary/10 to-primary/5">
                     {item.type === "image" ? (
                       <img
@@ -198,7 +231,7 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
             key={index}
             onClick={() => emblaApi?.scrollTo(index)}
             className={`h-2 rounded-full transition-all duration-300 ${
-              emblaApi?.selectedScrollSnap() === index
+              selectedIndex === index
                 ? "bg-primary w-6"
                 : "bg-muted-foreground/50 w-2 hover:bg-muted-foreground/70"
             }`}

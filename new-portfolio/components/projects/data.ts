@@ -40,8 +40,8 @@ export const PROJECTS: Project[] = [
     media: [
       { type: "video", src: "/projects/ia-tumoral-4.mp4" },
       { type: "image", src: "/projects/ia-tumoral-1.webp" },
-      { type: "image", src: "/projects/ia-tumoral-2.webp" },
       { type: "image", src: "/projects/ia-tumoral-3.webp" },
+      { type: "image", src: "/projects/ia-tumoral-2.webp" },
     ],
     technologies: [
       "Astro",
@@ -52,6 +52,7 @@ export const PROJECTS: Project[] = [
       "Python",
       "FastAPI",
     ],
+    link: "https://www.linkedin.com/posts/ciencia-2030-ufro_felicitamos-al-equipo-de-estudiantes-esteban-ugcPost-7214262219021135872-wUgt?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFC70ToB1pNYpZanUmtG3Lu49BcORd_RdGs",
   },
   {
     id: 3,
@@ -80,7 +81,7 @@ export const PROJECTS: Project[] = [
   },
     {
     id: 4,
-    title: "SCANBIKE - Sistema de Gestión y Trazabilidad de Cicloparqueaderos",
+    title: "SCANBIKE - Sistema de Cicloparqueaderos",
     category: "Software Development Lifecycle",
     startDate: "Mar 2025",
     endDate: "Jul 2025",
@@ -113,7 +114,7 @@ export const PROJECTS: Project[] = [
   },
   {
     id: 5,
-    title: "L'essence - Catálogo Digital de Alta Perfumería",
+    title: "L'essence - Catálogo Digital de Perfumería",
     category: "Software Development Lifecycle",
     startDate: "Ene 2026",
     endDate: "Feb 2026",
@@ -136,6 +137,7 @@ export const PROJECTS: Project[] = [
       "WhatsApp Business API",
       "Framer Motion",
     ],
+    link: "https://lassence.vercel.app/",
   },
   {
     id: 6,
@@ -154,6 +156,7 @@ export const PROJECTS: Project[] = [
       { type: "image", src: "/projects/iot-3.webp" },
     ],
     technologies: ["Next.js", "Node.js", "TailwindCSS", "React", "IoT"],
+    link: "https://www.linkedin.com/posts/gdiaz14_internetdelascosas-iot-esp32-activity-7282398027258949633-b20q?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFC70ToB1pNYpZanUmtG3Lu49BcORd_RdGs",
   },
   {
     id: 7,
@@ -177,10 +180,11 @@ export const PROJECTS: Project[] = [
       "TailwindCSS",
       "Docker",
     ],
+    link: "https://www.linkedin.com/posts/gdiaz14_nodejs-expressjs-jwt-activity-7274523974452027392-d8Ik?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFC70ToB1pNYpZanUmtG3Lu49BcORd_RdGs",
   },
   {
     id: 8,
-    title: "Red Impacto - Plataforma de Conexión de Voluntarios",
+    title: "Red Impacto - Aplicación de Conexión con Voluntarios",
     category: "Personal Project",
     startDate: "Mar 2024",
     endDate: "Jun 2024",
@@ -204,5 +208,6 @@ export const PROJECTS: Project[] = [
       "Next.js",
       "Express.js",
     ],
+    link: "https://www.linkedin.com/posts/gdiaz14_softwaredevelopment-uxdesign-nodejs-activity-7277096178343657473-S8g-?utm_source=share&utm_medium=member_desktop&rcm=ACoAAFC70ToB1pNYpZanUmtG3Lu49BcORd_RdGs",
   },
 ];

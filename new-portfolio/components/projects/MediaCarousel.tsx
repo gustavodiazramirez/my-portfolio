@@ -12,18 +12,20 @@ interface MediaCarouselProps {
 
 export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
-  
+  const [isVisible, setIsVisible] = useState(false);
+  const carouselContainerRef = useRef<HTMLDivElement>(null);
+
   const autoplayRef = useRef(
-    Autoplay({ delay: 4000, stopOnInteraction: false })
+    Autoplay({ delay: 4000, stopOnInteraction: false }),
   );
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { 
+    {
       loop: true,
       align: "center",
       skipSnaps: false,
     },
-    [autoplayRef.current]
+    [autoplayRef.current],
   );
 
   const [thumbsRef, thumbsApi] = useEmblaCarousel({
@@ -37,7 +39,7 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
       if (!emblaApi || !thumbsApi) return;
       emblaApi.scrollTo(index);
     },
-    [emblaApi, thumbsApi]
+    [emblaApi, thumbsApi],
   );
 
   const onSelect = useCallback(() => {
@@ -49,15 +51,15 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
 
   useEffect(() => {
     if (!emblaApi) return;
-    
+
     const updateSelectedIndex = () => {
       setSelectedIndex(emblaApi.selectedScrollSnap());
     };
-    
+
     updateSelectedIndex();
     emblaApi.on("select", updateSelectedIndex);
     emblaApi.on("reInit", updateSelectedIndex);
-    
+
     return () => {
       emblaApi.off("select", updateSelectedIndex);
       emblaApi.off("reInit", updateSelectedIndex);
@@ -66,15 +68,15 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
 
   useEffect(() => {
     if (!emblaApi || !thumbsApi) return;
-    
+
     const syncThumbnails = () => {
       const selected = emblaApi.selectedScrollSnap();
       thumbsApi.scrollTo(selected);
     };
-    
+
     syncThumbnails();
     emblaApi.on("select", syncThumbnails);
-    
+
     return () => {
       emblaApi.off("select", syncThumbnails);
     };
@@ -83,13 +85,45 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
   // Manejar videos
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
 
+  // Intersection Observer para detectar cuando el carrusel es visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+
+        // Controlar autoplay basado en visibilidad
+        if (entry.isIntersecting) {
+          autoplayRef.current.play();
+        } else {
+          autoplayRef.current.stop();
+        }
+      },
+      {
+        threshold: 0.3, // El carrusel debe estar al menos 30% visible
+      },
+    );
+
+    if (carouselContainerRef.current) {
+      observer.observe(carouselContainerRef.current);
+    }
+
+    // Detener autoplay inicialmente
+    autoplayRef.current.stop();
+
+    return () => {
+      if (carouselContainerRef.current) {
+        observer.unobserve(carouselContainerRef.current);
+      }
+    };
+  }, []);
+
   useEffect(() => {
     if (!emblaApi) return;
 
     const onSelectVideo = () => {
       const selectedIndex = emblaApi.selectedScrollSnap();
       const currentItem = media[selectedIndex];
-      
+
       // Si el slide actual es un video, pausar autoplay
       if (currentItem?.type === "video") {
         autoplayRef.current.stop();
@@ -97,7 +131,7 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
         // Si es una imagen, reanudar autoplay
         autoplayRef.current.play();
       }
-      
+
       // Pausar todos los videos
       videoRefs.current.forEach((video, index) => {
         if (video) {
@@ -122,7 +156,7 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
   if (media.length === 1) {
     const item = media[0];
     return (
-      <div className="relative mt-4">
+      <div ref={carouselContainerRef} className="relative mt-4">
         <div className="overflow-hidden rounded-2xl shadow-2xl border border-border/50 bg-linear-to-br from-primary/20 via-primary/10 to-primary/5">
           {item.type === "image" ? (
             <img
@@ -146,15 +180,15 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
   }
 
   return (
-    <div className="relative mt-4">
+    <div ref={carouselContainerRef} className="relative mt-4">
       {/* Main Carousel */}
-      <div className="overflow-hidden rounded-2xl shadow-2xl border border-border/50" ref={emblaRef}>
+      <div
+        className="overflow-hidden rounded-2xl shadow-2xl border border-border/50"
+        ref={emblaRef}
+      >
         <div className="flex">
           {media.map((item, index) => (
-            <div
-              key={index}
-              className="flex-[0_0_100%] min-w-0"
-            >
+            <div key={index} className="flex-[0_0_100%] min-w-0">
               <div className="relative bg-linear-to-br from-primary/20 via-primary/10 to-primary/5">
                 {item.type === "image" ? (
                   <img
@@ -164,7 +198,9 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
                   />
                 ) : (
                   <video
-                    ref={(el) => { videoRefs.current[index] = el; }}
+                    ref={(el) => {
+                      videoRefs.current[index] = el;
+                    }}
                     src={item.src}
                     className="w-full h-auto object-contain"
                     muted
@@ -193,11 +229,13 @@ export const MediaCarousel = ({ media, projectTitle }: MediaCarouselProps) => {
                 onClick={() => onThumbClick(index)}
                 className="flex-[0_0_30%] min-w-0 relative cursor-pointer"
               >
-                <div className={`aspect-video rounded-lg overflow-hidden border-2 transition-all duration-300 shadow-md hover:shadow-lg ${
-                  selectedIndex === index
-                    ? "border-primary"
-                    : "border-border hover:border-primary"
-                }`}>
+                <div
+                  className={`aspect-video rounded-lg overflow-hidden border-2 transition-all duration-300 shadow-md hover:shadow-lg ${
+                    selectedIndex === index
+                      ? "border-primary"
+                      : "border-border hover:border-primary"
+                  }`}
+                >
                   <div className="relative w-full h-full bg-linear-to-br from-primary/10 to-primary/5">
                     {item.type === "image" ? (
                       <img

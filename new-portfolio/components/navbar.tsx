@@ -15,6 +15,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [activeSection, setActiveSection] = useState("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -41,6 +42,39 @@ const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
+  useEffect(() => {
+    const observerOptions = {
+      root: null,
+      rootMargin: "-20% 0px -50% 0px",
+      threshold: 0,
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const sectionId = `#${entry.target.id}`;
+          // Si estamos en hero, limpiar la sección activa
+          if (sectionId === "#hero") {
+            setActiveSection("");
+          } else {
+            setActiveSection(sectionId);
+          }
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+    // Observar todas las secciones incluyendo hero
+    const sections = ["hero", "about-me", "projects", "certifications", "contact"];
+    sections.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
@@ -97,7 +131,11 @@ const Navbar = () => {
                   }}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="text-muted-foreground hover:text-foreground transition-colors text-[10px] sm:text-xs md:text-sm font-medium px-1.5 sm:px-2 md:px-0"
+                  className={`transition-all text-[10px] sm:text-xs md:text-sm px-1.5 sm:px-2 md:px-0 ${
+                    activeSection === href
+                      ? "text-foreground font-bold"
+                      : "text-muted-foreground font-medium hover:text-foreground"
+                  }`}
                 >
                   {label}
                 </motion.a>
@@ -113,7 +151,9 @@ const Navbar = () => {
                 }}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className="bg-primary text-primary-foreground px-2.5 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full hover:opacity-90 transition-opacity text-[10px] sm:text-xs md:text-sm font-medium shadow-md hover:shadow-lg whitespace-nowrap"
+                className={`bg-primary text-primary-foreground px-2.5 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full hover:opacity-90 transition-opacity text-[10px] sm:text-xs md:text-sm shadow-md hover:shadow-lg whitespace-nowrap ${
+                  activeSection === "#contact" ? "font-bold" : "font-medium"
+                }`}
               >
                 Contacto
               </motion.a>

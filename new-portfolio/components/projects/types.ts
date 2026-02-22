@@ -8,6 +8,7 @@ export interface Project {
   media: MediaItem[];
   technologies: string[];
   category: string;
+  link?: string;
 }
 
 export interface MediaItem {

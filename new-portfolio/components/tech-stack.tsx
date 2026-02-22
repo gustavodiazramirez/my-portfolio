@@ -1,6 +1,12 @@
 "use client";
 
 import React from "react";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const technologies = [
   { name: "Node.js", icon: "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" },
@@ -22,54 +28,31 @@ export default function TechStack() {
   return (
     <section className="py-20 overflow-hidden bg-background">
       <div className="container mx-auto px-4">
-        
         <div className="relative">
-          <div className="tech-carousel group">
-            {/* Duplicamos los logos para crear el efecto de loop infinito */}
-            {[...technologies, ...technologies].map((tech, index) => (
-              <div
-                key={index}
-                className="flex-shrink-0 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300"
-                title={tech.name}
-              >
-                <img
-                  src={tech.icon}
-                  alt={tech.name}
-                  className="w-16 h-16 md:w-20 md:h-20 object-contain"
-                />
-              </div>
-            ))}
-          </div>
+          <TooltipProvider>
+            <div className="flex gap-12 md:gap-16 w-fit animate-scroll">
+              {[...technologies, ...technologies].map((tech, index) => (
+                <Tooltip key={index}>
+                  <TooltipTrigger asChild>
+                    <div
+                      className="shrink-0 grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-pointer"
+                    >
+                      <img
+                        src={tech.icon}
+                        alt={tech.name}
+                        className="w-16 h-16 md:w-20 md:h-20 object-contain"
+                      />
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Habilidad con {tech.name}</p>
+                  </TooltipContent>
+                </Tooltip>
+              ))}
+            </div>
+          </TooltipProvider>
         </div>
       </div>
-      
-      <style jsx>{`
-        @keyframes scroll {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-        
-        .tech-carousel {
-          display: flex;
-          gap: 4rem;
-          width: fit-content;
-          animation: scroll 40s linear infinite;
-        }
-        
-        .tech-carousel:hover {
-          animation-play-state: paused;
-        }
-        
-        @media (max-width: 768px) {
-          .tech-carousel {
-            gap: 3rem;
-          }
-        }
-      `}</style>
     </section>
   );
 }

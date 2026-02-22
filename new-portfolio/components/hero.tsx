@@ -6,7 +6,7 @@ import { motion } from "framer-motion";
 const PHRASES = [
   "soluciones tecnológicas",
   "experiencias únicas",
-  "aplicaciones web modernas",
+  "plataformas modernas",
 ];
 
 const Hero = () => {
@@ -58,6 +58,20 @@ const Hero = () => {
             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
             className="space-y-2 sm:space-y-3"
           >
+            {/* Profile Picture - Only on small screens */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
+              className="md:hidden flex justify-center mb-6"
+            >
+              <img
+                src="/foto-perfil.png"
+                alt="Foto de perfil"
+                className="w-48 h-48 rounded-full shadow-xl border-4 border-primary object-cover"
+              />
+            </motion.div>
+
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
               Transformando ideas en
             </h1>
@@ -92,7 +106,7 @@ const Hero = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="w-full sm:w-auto bg-primary text-primary-foreground px-8 py-3 rounded-full hover:opacity-90 transition-all duration-300 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl cursor-pointer"
+              className="w-full sm:w-auto bg-primary text-primary-foreground px-8 py-3 rounded-full hover:opacity-95 transition-all duration-50 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl cursor-pointer"
             >
               Conocer más sobre mí
             </motion.a>
@@ -101,7 +115,7 @@ const Hero = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="w-full sm:w-auto bg-transparent text-foreground border-2 border-border px-8 py-3 rounded-full hover:bg-accent hover:border-primary transition-all duration-300 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl cursor-pointer"
+              className="w-full sm:w-auto bg-gray-100/5 text-foreground border-2 border-border px-8 py-3 rounded-full hover:bg-accent hover:border-primary transition-all duration-50 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl cursor-pointer"
             >
               Ver CV
             </motion.button>

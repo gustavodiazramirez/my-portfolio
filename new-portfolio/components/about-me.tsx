@@ -148,7 +148,7 @@ const AboutMe = () => {
           </p>
 
           {/* Grid de highlights */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+          <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
             {highlights.map((highlight, index) => (
               <motion.div
                 key={index}

@@ -4,6 +4,12 @@ import { Calendar } from "lucide-react";
 import { Project } from "./types";
 import { MediaCarousel } from "./MediaCarousel";
 import { motion } from "framer-motion";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface ProjectCardProps {
   project: Project;
@@ -18,7 +24,7 @@ export const ProjectCard = ({ project, index }: ProjectCardProps) => {
       initial={{ opacity: 0, y: 50 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-100px" }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
       className="group relative"
     >
       <div
@@ -45,9 +51,31 @@ export const ProjectCard = ({ project, index }: ProjectCardProps) => {
             </div>
 
             {/* Title */}
-            <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-foreground transition-colors leading-tight">
-              {project.title}
-            </h3>
+            {project.link ? (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block w-fit"
+                    >
+                      <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-foreground transition-colors leading-tight underline-offset-4 hover:underline">
+                        {project.title}
+                      </h3>
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Ver más de este proyecto</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ) : (
+              <h3 className="text-lg sm:text-xl lg:text-2xl font-extrabold text-foreground transition-colors leading-tight">
+                {project.title}
+              </h3>
+            )}
 
             {/* Date */}
             <div className="flex items-center gap-2 text-sm text-muted-foreground">

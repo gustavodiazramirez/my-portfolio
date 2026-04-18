@@ -30,7 +30,6 @@ export default function RootLayout({
           <div className="absolute -bottom-8 left-20 w-125 h-125 bg-blob/10 rounded-full filter blur-3xl" />
           <div className="absolute bottom-20 right-20 w-125 h-125 bg-blob/10 rounded-full filter blur-3xl" />
         </div>
-        
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"

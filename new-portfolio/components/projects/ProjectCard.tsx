@@ -91,21 +91,23 @@ export const ProjectCard = ({ project, index }: ProjectCardProps) => {
             </p>
 
             {/* Technologies */}
-            <div className="flex flex-wrap gap-2">
+            <motion.div
+              className="flex flex-wrap gap-2"
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4 }}
+            >
               {project.technologies.map((tech, idx) => (
                 <motion.span
                   key={idx}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.3, delay: idx * 0.05 }}
                   whileHover={{ scale: 1.1, y: -2 }}
                   className="px-2.5 lg:px-3 py-1 lg:py-1.5 text-xs font-semibold bg-secondary/50 border border-border hover:border-primary hover:bg-primary/10 text-secondary-foreground rounded-md transition-all cursor-default"
                 >
                   {tech}
                 </motion.span>
               ))}
-            </div>
+            </motion.div>
           </div>
         </div>
 

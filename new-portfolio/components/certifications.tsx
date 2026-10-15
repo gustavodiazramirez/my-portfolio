@@ -1,147 +1,98 @@
 "use client";
 
-import { Award, ExternalLink, Calendar, Shield, ChevronDown } from "lucide-react";
+import { ArrowUpRight, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { certifications as certificationsData } from "@/lib/certifications";
-import { motion } from "framer-motion";
+import Reveal from "./reveal";
+import SectionLabel from "./section-label";
+
+const VISIBLE = 5;
 
 const Certifications = () => {
   const [showAll, setShowAll] = useState(false);
-  const displayedCertifications = showAll ? certificationsData : certificationsData.slice(0, 5);
+  const extra = certificationsData.length - VISIBLE;
 
   return (
-    <section
-      id="certifications"
-      className="relative py-16 sm:py-20 lg:py-28 xl:py-32 px-6 sm:px-8 lg:px-16 xl:px-60"
-    >
-      {/* Background Effects */}
-      <div className="absolute top-1/4 right-1/4 w-64 h-64 lg:w-96 lg:h-96 bg-primary/5 rounded-full blur-3xl" />
-
-      <div className="relative max-w-7xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12 lg:mb-16"
-        >
-          <div className="space-y-3 mb-6">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              Licencias y Certificaciones
-            </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-primary to-primary/30 rounded-full mx-auto"></div>
-          </div>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Formación continua en tecnologías y metodologías modernas
-          </p>
-        </motion.div>
-
-        {/* Table - Desktop and Mobile */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-          className="rounded-xl border border-border/50 bg-card/30 backdrop-blur-sm overflow-hidden"
-        >
-          <div className="overflow-x-auto">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-border/50 bg-muted/30">
-                  <th className="text-left py-4 px-6 text-sm font-semibold text-foreground">
-                    <div className="flex items-center gap-2">
-                      <Award className="w-4 h-4 text-primary" />
-                      Certificación
-                    </div>
-                  </th>
-                  <th className="text-left py-4 px-6 text-sm font-semibold text-foreground">
-                    <div className="flex items-center gap-2">
-                      <Shield className="w-4 h-4 text-primary" />
-                      Emisor
-                    </div>
-                  </th>
-                  <th className="hidden md:table-cell text-left py-4 px-6 text-sm font-semibold text-foreground">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-primary" />
-                      Fecha
-                    </div>
-                  </th>
-                  <th className="hidden md:table-cell text-center py-4 px-6 text-sm font-semibold text-foreground">
-                    Credencial
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {displayedCertifications.map((cert, index) => (
-                  <motion.tr
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.4, delay: index * 0.05 }}
-                    className="border-b border-border/30 hover:bg-primary/5 transition-colors duration-200 group"
-                  >
-                    <td className="py-4 px-6">
-                      <div className="flex flex-col">
-                        <span className="font-medium text-foreground group-hover:text-primary transition-colors">
-                          {cert.titulo}
-                        </span>
-                      </div>
-                    </td>
-                    <td className="py-4 px-6 text-sm text-muted-foreground">
-                      {cert.institucion}
-                    </td>
-                    <td className="hidden md:table-cell py-4 px-6 text-sm text-muted-foreground">
-                      {cert.fecha}
-                    </td>
-                    <td className="hidden md:table-cell py-4 px-6 text-center">
-                      <a
-                        href={cert.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary/10 text-primary hover:bg-primary hover:text-primary-foreground border border-primary/20 hover:border-primary transition-all duration-200 text-sm font-medium group-hover:scale-105"
-                      >
-                        <ExternalLink className="w-3.5 h-3.5" />
-                        Ver credencial
-                      </a>
-                    </td>
-                  </motion.tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </motion.div>
-
-
-
-        {/* Ver más / Ver menos button */}
-        {certificationsData.length > 5 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6, delay: 0.4 }}
-            className="flex justify-center mt-8"
+    <section id="certifications" className="mx-auto max-w-[1280px] px-[clamp(20px,5vw,64px)] py-[88px] sm:py-[120px]">
+      <header className="mb-10 flex sm:mb-12 flex-wrap items-end justify-between gap-6">
+        <div className="flex flex-col gap-7">
+          <SectionLabel number="03" label="LICENCIAS Y CERTIFICACIONES" />
+          <Reveal
+            as="h2"
+            className="m-0 text-[clamp(36px,4.6vw,64px)] leading-[1.04] font-normal tracking-[-0.035em]"
           >
-            <motion.button
-              onClick={() => setShowAll(!showAll)}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="group inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-card/50 backdrop-blur-sm border border-border/50 hover:border-primary/30 text-foreground hover:text-primary transition-all duration-300 hover:shadow-lg hover:shadow-primary/5"
+            Formación <span className="font-serif italic">continua</span>
+          </Reveal>
+        </div>
+        <Reveal as="p" className="m-0 max-w-[40ch] text-base leading-[1.6] text-ink-2">
+          Formación continua en tecnologías y metodologías modernas
+        </Reveal>
+      </header>
+
+      <Reveal className="glass rounded-[24px] bg-white/[0.03] p-1.5 sm:rounded-[28px] sm:p-2">
+        {certificationsData.map((cert, index) => {
+          const open = index < VISIBLE || showAll;
+          // Cascada: al abrir en orden, al cerrar en orden inverso
+          const k = Math.max(0, index - VISIBLE);
+          const delay = index < VISIBLE ? 0 : showAll ? k * 0.05 : (extra - 1 - k) * 0.03;
+          return (
+            <div
+              key={cert.url}
+              className="grid"
+              style={{
+                gridTemplateRows: open ? "1fr" : "0fr",
+                opacity: open ? 1 : 0,
+                transition: `grid-template-rows .7s var(--ease-expand) ${delay}s, opacity .55s ease ${delay}s`,
+              }}
             >
-              <span className="font-medium">
-                {showAll ? "Ver menos" : `Ver más (${certificationsData.length - 5} adicionales)`}
-              </span>
-              <ChevronDown
-                className={`w-4 h-4 transition-transform duration-300 ${
-                  showAll ? "rotate-180" : ""
-                }`}
-              />
-            </motion.button>
-          </motion.div>
-        )}
-      </div>
+              <div className="min-h-0 overflow-hidden">
+                <a
+                  href={cert.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  tabIndex={open ? undefined : -1}
+                  className="flex items-center gap-x-4 rounded-[20px] px-3.5 py-4 text-foreground transition-colors duration-300 hover:bg-white/5 hover:text-white sm:gap-x-6 sm:px-5 sm:py-[18px]"
+                >
+                  <span className="w-[22px] shrink-0 self-start pt-[3px] font-mono text-[11px] text-ink-3 md:self-center md:pt-0">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  {/* Móvil: título arriba y emisor · fecha abajo. md+: columnas en línea */}
+                  <span className="flex min-w-0 flex-1 flex-col gap-1.5 md:flex-row md:items-center md:gap-6">
+                    <span className="min-w-0 text-[15px] tracking-[-0.01em] sm:text-base md:flex-[1_1_280px]">
+                      {cert.titulo}
+                    </span>
+                    <span className="flex flex-wrap gap-x-3 md:contents">
+                      <span className="text-[13px] text-ink-1 sm:text-[13.5px] md:flex-[0_0_170px]">
+                        {cert.institucion}
+                      </span>
+                      <span className="font-mono text-xs text-ink-3 md:flex-[0_0_120px]">
+                        {cert.fecha}
+                      </span>
+                    </span>
+                  </span>
+                  <span className="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-white/12 text-chip">
+                    <ArrowUpRight className="h-3.5 w-3.5" />
+                  </span>
+                </a>
+              </div>
+            </div>
+          );
+        })}
+      </Reveal>
+
+      {extra > 0 && (
+        <div className="mt-7 flex justify-center">
+          <button
+            onClick={() => setShowAll((prev) => !prev)}
+            className="inline-flex items-center gap-2.5 rounded-full border border-white/12 bg-white/5 px-[22px] py-[13px] text-sm text-foreground backdrop-blur-[20px] transition-colors duration-300 hover:bg-white/10"
+          >
+            {showAll ? "Ver menos" : `Ver más (${extra} adicionales)`}
+            <ChevronDown
+              className={`h-[15px] w-[15px] transition-transform duration-400 ${showAll ? "rotate-180" : ""}`}
+            />
+          </button>
+        </div>
+      )}
     </section>
   );
 };

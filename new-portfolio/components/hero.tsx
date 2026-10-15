@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
+import Reveal from "./reveal";
 
 const PHRASES = [
   "soluciones tecnológicas",
@@ -9,118 +10,110 @@ const PHRASES = [
   "plataformas modernas",
 ];
 
+const LONGEST_PHRASE = PHRASES.reduce((a, b) => (b.length > a.length ? b : a));
+
 const Hero = () => {
   const [phraseIndex, setPhraseIndex] = useState(0);
-  const [displayText, setDisplayText] = useState("");
+  const [typed, setTyped] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
-    const currentPhrase = PHRASES[phraseIndex];
-    const timeout = setTimeout(
-      () => {
-        if (!isDeleting) {
-          if (displayText.length < currentPhrase.length) {
-            setDisplayText(currentPhrase.slice(0, displayText.length + 1));
-          } else {
-            setTimeout(() => setIsDeleting(true), 2000);
-          }
-        } else {
-          if (displayText.length > 0) {
-            setDisplayText(currentPhrase.slice(0, displayText.length - 1));
-          } else {
-            setIsDeleting(false);
-            setPhraseIndex((prev) => (prev + 1) % PHRASES.length);
-          }
-        }
-      },
-      isDeleting ? 50 : 100,
-    );
+    const phrase = PHRASES[phraseIndex];
+    let delay: number;
+    let next: () => void;
 
+    if (!isDeleting) {
+      if (typed.length < phrase.length) {
+        delay = typed.length === 0 && phraseIndex === 0 ? 600 : 85;
+        next = () => setTyped(phrase.slice(0, typed.length + 1));
+      } else {
+        delay = 2000;
+        next = () => setIsDeleting(true);
+      }
+    } else if (typed.length > 0) {
+      delay = 40;
+      next = () => setTyped(phrase.slice(0, typed.length - 1));
+    } else {
+      delay = 300;
+      next = () => {
+        setIsDeleting(false);
+        setPhraseIndex((prev) => (prev + 1) % PHRASES.length);
+      };
+    }
+
+    const timeout = setTimeout(next, delay);
     return () => clearTimeout(timeout);
-  }, [displayText, isDeleting, phraseIndex]);
+  }, [typed, isDeleting, phraseIndex]);
 
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex items-center justify-center px-6 sm:px-8 lg:px-16 xl:px-60 pt-24 sm:pt-28 lg:pt-32 pb-16"
+      className="relative mx-auto flex min-h-svh sm:h-svh sm:min-h-[480px] max-w-[1280px] flex-col items-center justify-center px-[clamp(20px,5vw,64px)] pt-[clamp(76px,13vh,96px)] pb-[clamp(28px,8vh,72px)] text-center"
     >
-      <div className="w-full max-w-4xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="text-center space-y-5 sm:space-y-6 lg:space-y-7"
+      <div className="flex max-w-[1000px] min-w-0 flex-col items-center gap-[clamp(14px,3.2vh,32px)]">
+        {/* Eyebrow en pastilla glass; en pantallas muy angostas se parte en dos líneas */}
+        <Reveal className="glass-pill inline-flex flex-wrap items-center justify-center gap-x-3.5 gap-y-0.5 rounded-[20px] px-5 py-2 text-[13px] leading-snug font-normal tracking-[-0.005em] min-[440px]:rounded-full sm:text-sm">
+          {/* text-glass en cada span: Safari no recorta bien background-clip:text a través de hijos */}
+          <span>
+            <span className="text-glass">Desarrollador </span>
+            <span className="text-glass font-serif text-[1.12em] tracking-normal italic">
+              Full Stack
+            </span>
+          </span>
+          {/* Separador: línea fina que se desvanece en los extremos */}
+          <span
+            aria-hidden="true"
+            className="hidden h-3.5 w-px bg-[linear-gradient(transparent,rgba(255,255,255,0.35),transparent)] min-[440px]:block"
+          />
+          <span className="text-glass">Ingeniero en Informática</span>
+        </Reveal>
+
+        <div>
+          <Reveal
+            as="h1"
+            className="m-0 text-[clamp(36px,min(7vw,10vh),112px)] leading-[0.98] font-normal tracking-[-0.045em] text-balance"
+          >
+            Transformando ideas en
+          </Reveal>
+          <Reveal className="relative pb-1 font-serif text-[clamp(28px,8.8vw,40px)] leading-[1.05] tracking-[-0.02em] whitespace-nowrap italic sm:text-[clamp(40px,min(7.6vw,11vh),122px)]">
+            {/* Reserva el espacio con la frase más larga para que la página no salte */}
+            <span aria-hidden="true" className="invisible">
+              {LONGEST_PHRASE}
+              <span className="inline-block w-[9px]" />
+            </span>
+            <span className="absolute inset-x-0 top-0 text-center">
+              <span className="text-gradient">{typed}</span>
+              <span className="animate-blink ml-1.5 inline-block h-[0.78em] w-[3px] bg-accent align-[-0.06em]" />
+            </span>
+          </Reveal>
+        </div>
+
+        <Reveal
+          as="p"
+          className="m-0 max-w-[52ch] text-[clamp(15px,1.4vw,19px)] leading-[1.6] text-pretty text-ink-1"
         >
-          {/* Main Heading */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-            className="space-y-2 sm:space-y-3"
-          >
-            {/* Profile Picture - Only on small screens */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.5, delay: 0.1, ease: "easeOut" }}
-              className="md:hidden flex justify-center mb-6"
-            >
-              <img
-                src="/foto-perfil.png"
-                alt="Foto de perfil"
-                className="w-48 h-48 rounded-full shadow-xl border-4 border-primary object-cover"
-              />
-            </motion.div>
+          Desarrollador Full Stack especializado en crear aplicaciones web
+          modernas con arquitectura sólida y experiencias excepcionales.
+        </Reveal>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              Transformando ideas en
-            </h1>
-            <div className="relative flex items-center justify-center">
-              <span className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-primary">
-                {displayText}
-                <span className="animate-pulse ml-0.5">|</span>
-              </span>
-            </div>
-          </motion.div>
-
-          {/* Description */}
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-            className="text-sm sm:text-base md:text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed"
+        <Reveal className="flex w-full flex-col items-stretch justify-center gap-3 min-[420px]:w-auto min-[420px]:flex-row min-[420px]:flex-wrap min-[420px]:items-center">
+          <a
+            href="#about-me"
+            className="inline-flex items-center justify-center gap-2.5 rounded-full bg-foreground px-[22px] py-3.5 text-[15px] font-medium whitespace-nowrap text-background shadow-[0_10px_40px_-10px_oklch(0.80_0.11_235/.6)] transition-transform duration-300 hover:-translate-y-0.5 hover:text-background"
           >
-            Desarrollador Full Stack especializado en crear aplicaciones web
-            modernas con arquitectura sólida y experiencias excepcionales.
-          </motion.p>
-
-          {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 pt-2 sm:pt-3"
+            Conocer más sobre mí
+            <ArrowDown className="h-4 w-4" />
+          </a>
+          <a
+            href="/cv.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2.5 rounded-full border border-white/12 bg-white/5 px-[22px] py-3.5 text-[15px] font-medium whitespace-nowrap backdrop-blur-[20px] transition-all duration-300 hover:bg-white/10 hover:text-white"
           >
-            <motion.a
-              href="#about-me"
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="w-full sm:w-auto bg-primary text-primary-foreground px-8 py-3 rounded-full hover:opacity-95 transition-all duration-50 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl cursor-pointer"
-            >
-              Conocer más sobre mí
-            </motion.a>
-            <motion.button
-              onClick={() => window.open('/cv.pdf', '_blank')}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ type: "spring", stiffness: 400, damping: 10 }}
-              className="w-full sm:w-auto bg-gray-100/5 text-foreground border-2 border-border px-8 py-3 rounded-full hover:bg-accent hover:border-primary transition-all duration-50 text-sm sm:text-base font-semibold shadow-lg hover:shadow-xl cursor-pointer"
-            >
-              Ver CV
-            </motion.button>
-          </motion.div>
-        </motion.div>
+            Ver CV
+            <ArrowUpRight className="h-4 w-4" />
+          </a>
+        </Reveal>
       </div>
     </section>
   );

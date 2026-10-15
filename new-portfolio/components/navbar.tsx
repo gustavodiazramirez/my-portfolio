@@ -1,9 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { ThemeToggle } from "./theme-toggle";
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
   { href: "#about-me", label: "Sobre mí" },
@@ -12,61 +11,23 @@ const NAV_LINKS = [
 ];
 
 const Navbar = () => {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [isVisible, setIsVisible] = useState(true);
-  const [lastScrollY, setLastScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      setIsScrolled(currentScrollY > 50);
-      
-      // Si estamos en la parte superior, siempre mostrar
-      if (currentScrollY < 10) {
-        setIsVisible(true);
-      } 
-      // Si scrolleamos hacia abajo, ocultar
-      else if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        setIsVisible(false);
-      } 
-      // Si scrolleamos hacia arriba, mostrar
-      else if (currentScrollY < lastScrollY) {
-        setIsVisible(true);
-      }
-      
-      setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
-
-  useEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: "-20% 0px -50% 0px",
-      threshold: 0,
-    };
-
-    const observerCallback = (entries: IntersectionObserverEntry[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const sectionId = `#${entry.target.id}`;
-          // Si estamos en hero, limpiar la sección activa
-          if (sectionId === "#hero") {
-            setActiveSection("");
-          } else {
-            setActiveSection(sectionId);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Si estamos en hero, limpiar la sección activa
+            setActiveSection(entry.target.id === "hero" ? "" : `#${entry.target.id}`);
           }
-        }
-      });
-    };
+        });
+      },
+      { root: null, rootMargin: "-20% 0px -50% 0px", threshold: 0 },
+    );
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    // Observar todas las secciones incluyendo hero
     const sections = ["hero", "about-me", "projects", "certifications", "contact"];
     sections.forEach((id) => {
       const element = document.getElementById(id);
@@ -76,93 +37,114 @@ const Navbar = () => {
     return () => observer.disconnect();
   }, []);
 
-  return (
-    <>
-      <motion.nav 
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ 
-          y: isVisible ? 0 : -32, 
-          opacity: isVisible ? 1 : 0,
-          filter: isVisible ? "blur(0px)" : "blur(4px)"
-        }}
-        transition={{ 
-          duration: 0.3,
-          ease: "easeOut"
-        }}
-        className={`fixed top-3 sm:top-4 lg:top-6 left-1/2 -translate-x-1/2 z-50 w-[96%] sm:w-[90%] max-w-3xl ${
-          !isVisible && 'pointer-events-none'
-        }`}
-      >
-        <motion.div
-          className={`backdrop-blur-xl border rounded-full px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 transition-all duration-300 ${
-            isScrolled
-              ? "bg-card/95 border-border/40 shadow-2xl"
-              : "bg-card/90 border-border/90 shadow-xl"
-          }`}
-        >
-          <div className="flex items-center justify-center sm:justify-between">
-            <a
-              href="#hero"
-              className="items-center gap-2 sm:gap-3 shrink-0 hidden sm:flex"
-            >
-              <Image
-                src="/foto-perfil.png"
-                alt="Gustavo Díaz"
-                width={32}
-                height={32}
-                className="w-8 h-8 sm:w-9 sm:h-9 lg:w-10 lg:h-10 rounded-full object-cover ring-2 ring-primary/20"
-              />
-              <span className="font-semibold text-card-foreground text-sm sm:text-base hidden md:block">
-                Gustavo Díaz
-              </span>
-            </a>
+  // Menú móvil: cerrar al tocar fuera o con Escape
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onPointerDown = (e: PointerEvent) => {
+      if (!navRef.current?.contains(e.target as Node)) setMenuOpen(false);
+    };
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", onPointerDown);
+      document.removeEventListener("keydown", onKeyDown);
+    };
+  }, [menuOpen]);
 
-            <div className="flex items-center gap-1.5 sm:gap-2 md:gap-4 xl:gap-6">
-              {NAV_LINKS.map(({ href, label }, index) => (
-                <motion.a
-                  key={href}
-                  href={href}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ 
-                    duration: 0.4, 
-                    delay: index * 0.1,
-                    ease: "easeOut"
-                  }}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  className={`transition-all text-[10px] sm:text-xs md:text-sm px-1.5 sm:px-2 md:px-0 ${
-                    activeSection === href
-                      ? "text-foreground font-bold"
-                      : "text-muted-foreground font-medium hover:text-foreground"
-                  }`}
-                >
-                  {label}
-                </motion.a>
-              ))}
-              <motion.a
-                href="#contact"
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ 
-                  duration: 0.4, 
-                  delay: 0.3,
-                  ease: "easeOut"
-                }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`bg-primary text-primary-foreground px-2.5 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full hover:opacity-90 transition-opacity text-[10px] sm:text-xs md:text-sm shadow-md hover:shadow-lg whitespace-nowrap ${
-                  activeSection === "#contact" ? "font-bold" : "font-medium"
+  const closeMenu = () => setMenuOpen(false);
+
+  return (
+    <nav
+      ref={navRef}
+      className="fixed top-3 left-1/2 z-50 w-[min(calc(100%-24px),760px)] -translate-x-1/2 sm:top-[18px] sm:w-[min(94%,760px)]"
+    >
+      <div
+        className="flex items-center justify-between gap-3 rounded-full border border-white/[0.09] bg-[rgba(14,16,22,0.55)] py-2 pr-2 pl-2.5 backdrop-blur-[22px] backdrop-saturate-[160%]"
+        style={{
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.07), 0 18px 50px -20px rgba(0,0,0,0.7)",
+        }}
+      >
+        <a href="#hero" onClick={closeMenu} className="flex min-w-0 shrink items-center gap-2.5">
+          <Image
+            src="/foto-perfil.png"
+            alt="Gustavo Díaz"
+            width={32}
+            height={32}
+            className="h-8 w-8 shrink-0 rounded-full object-cover shadow-[0_0_0_1px_rgba(255,255,255,0.15)]"
+          />
+          <span className="truncate text-sm font-medium tracking-[-0.01em]">Gustavo Díaz</span>
+        </a>
+
+        <div className="flex shrink-0 items-center justify-end gap-0.5">
+          {NAV_LINKS.map(({ href, label }) => {
+            const active = activeSection === href;
+            return (
+              <a
+                key={href}
+                href={href}
+                className={`hidden rounded-full px-3.5 py-2 text-[13px] whitespace-nowrap transition-all duration-300 hover:text-white md:inline-block ${
+                  active ? "bg-white/[0.08] text-white" : "bg-transparent text-[#9aa0aa]"
                 }`}
               >
-                Contacto
-              </motion.a>
-              <ThemeToggle />
-            </div>
-          </div>
-        </motion.div>
-      </motion.nav>
-    </>
+                {label}
+              </a>
+            );
+          })}
+          <a
+            href="#contact"
+            onClick={closeMenu}
+            className="rounded-full bg-foreground px-4 py-2 text-[13px] font-medium whitespace-nowrap text-background transition-transform duration-300 hover:scale-[1.04] hover:text-background"
+          >
+            Contacto
+          </a>
+          <button
+            onClick={() => setMenuOpen((open) => !open)}
+            aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-menu"
+            className="ml-1 grid h-[34px] w-[34px] place-items-center rounded-full border border-white/12 bg-white/5 text-foreground md:hidden"
+          >
+            {menuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+          </button>
+        </div>
+      </div>
+
+      {/* Menú desplegable móvil */}
+      <div
+        id="mobile-menu"
+        className={`absolute inset-x-0 top-full mt-2 rounded-[24px] border border-white/[0.09] bg-[rgba(14,16,22,0.8)] p-2 backdrop-blur-[22px] backdrop-saturate-[160%] transition-all duration-300 ease-glass md:hidden ${
+          menuOpen
+            ? "pointer-events-auto translate-y-0 opacity-100"
+            : "pointer-events-none -translate-y-2 opacity-0"
+        }`}
+        style={{
+          boxShadow: "inset 0 1px 0 rgba(255,255,255,0.07), 0 18px 50px -20px rgba(0,0,0,0.7)",
+        }}
+      >
+        {NAV_LINKS.map(({ href, label }, index) => {
+          const active = activeSection === href;
+          return (
+            <a
+              key={href}
+              href={href}
+              onClick={closeMenu}
+              tabIndex={menuOpen ? undefined : -1}
+              className={`flex items-center gap-4 rounded-[18px] px-4 py-3.5 text-[15px] transition-colors hover:text-white ${
+                active ? "bg-white/[0.08] text-white" : "text-[#c7cbd2]"
+              }`}
+            >
+              <span className="font-mono text-[11px] text-ink-3">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              {label}
+            </a>
+          );
+        })}
+      </div>
+    </nav>
   );
 };
 

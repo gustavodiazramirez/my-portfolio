@@ -1,183 +1,117 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { Lightbulb, Rocket } from "lucide-react";
-import { motion } from "framer-motion";
+import Reveal from "./reveal";
+import SectionLabel from "./section-label";
+
+const PHOTOS = [
+  {
+    src: "/about-me/certificado-titulo.webp",
+    alt: "Certificado de título como Ingeniero en Informática",
+  },
+  {
+    src: "/about-me/presentacion.webp",
+    alt: "Defensa de titulo",
+  },
+  {
+    src: "/about-me/gustavo-ufro.webp",
+    alt: "Gustavo Díaz en la Universidad de La Frontera",
+  },
+];
+
+const STACK_TRANSFORMS = [
+  "none",
+  "translate(6%,4%) rotate(4deg) scale(0.94)",
+  "translate(12%,8%) rotate(8deg) scale(0.88)",
+];
 
 const AboutMe = () => {
-  const images = [
-    {
-      src: "/about-me/certificado-titulo.webp",
-      alt: "Certificado de título como Ingeniero en Informática",
-    },
-    {
-      src: "/about-me/presentacion.webp",
-      alt: "Defensa de titulo",
-    },
-    {
-      src: "/about-me/titulado.webp",
-      alt: "Foto de titulación",
-    },
-  ];
-
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [photoIndex, setPhotoIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setPhotoIndex((prev) => (prev + 1) % PHOTOS.length);
     }, 4000);
-
     return () => clearInterval(interval);
-  }, [images.length]);
-
-  const highlights = [
-    {
-      icon: Lightbulb,
-      title: "Aprendizaje Continuo",
-      description:
-        "Siempre actualizado con las últimas tecnologías y mejores prácticas",
-    },
-    {
-      icon: Rocket,
-      title: "Enfoque en Resultados",
-      description:
-        "Soluciones escalables que generan impacto tangible y sostenible",
-    },
-  ];
+  }, []);
 
   return (
+    // En escritorio la sección entera cabe en una pantalla: alto mínimo 100svh y tamaños
+    // derivados del alto del viewport (galería = 100svh − 290px de paddings, etiqueta y dots).
     <section
       id="about-me"
-      className="min-h-screen w-full px-6 sm:px-8 lg:px-16 xl:px-60 pt-24 sm:pt-28 md:pt-32 pb-12 md:pb-20 flex items-center"
+      className="mx-auto max-w-[1280px] px-[clamp(20px,5vw,64px)] py-[88px] sm:py-[120px] lg:flex lg:min-h-svh lg:flex-col lg:justify-center lg:pt-24 lg:pb-16"
     >
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true, margin: "-100px" }}
-        transition={{ duration: 0.6 }}
-        className="max-w-7xl mx-auto flex flex-col md:flex-row gap-10 md:gap-16 items-center md:items-center w-full"
-      >
-        {/* Galería de imágenes */}
-        <motion.div
-          initial={{ opacity: 0, x: -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="relative w-full md:w-auto shrink-0 order-2 md:order-1"
-        >
-          <div className="relative w-80 h-96 sm:w-96 sm:h-[28rem] mx-auto md:mx-0">
-            {images.map((image, index) => {
-              const position =
-                (index - currentIndex + images.length) % images.length;
+      <SectionLabel number="01" label="SOBRE MÍ" className="mb-10 sm:mb-14 lg:mb-[clamp(24px,4.5vh,56px)]" />
 
-              return (
-                <div
-                  key={index}
-                  className="absolute transition-all duration-1000 ease-in-out"
-                  style={{
-                    left:
-                      position === 0 ? "0px" : position === 1 ? "40px" : "80px",
-                    top:
-                      position === 0 ? "0px" : position === 1 ? "20px" : "40px",
-                    zIndex: position === 0 ? 30 : position === 1 ? 20 : 10,
-                    opacity: 1,
-                    transform: `scale(${position === 0 ? 1 : 0.95}) rotate(${position === 0 ? "0deg" : position === 1 ? "2deg" : "4deg"})`,
-                  }}
-                >
-                  <div className="relative overflow-hidden rounded-2xl shadow-2xl border border-border/50">
-                    <img
-                      src={image.src}
-                      alt={image.alt}
-                      className="w-64 h-80 sm:w-72 sm:h-100 object-cover"
-                    />
-                    {position !== 0 && (
-                      <div
-                        className="absolute inset-0 bg-black/20 transition-opacity duration-1000"
-                        style={{ opacity: position === 1 ? 0.15 : 0.3 }}
-                      />
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Indicadores del carrusel */}
-          <div className="flex justify-center gap-2 mt-6">
-            {images.map((_, index) => (
-              <motion.button
+      <div className="grid grid-cols-1 items-center gap-[clamp(40px,6vw,96px)] lg:grid-cols-2 lg:gap-[clamp(40px,5vw,80px)]">
+        {/* En móvil más angosta: las fotos de atrás se desplazan y rotan hacia la derecha */}
+        <Reveal className="relative mb-14 aspect-[4/5] w-[min(80%,420px)] -translate-x-[4%] justify-self-center sm:w-[min(100%,420px)] sm:translate-x-0 lg:mb-0 lg:w-[min(100%,420px,calc((100svh-290px)*0.8))]">
+          {PHOTOS.map((photo, index) => {
+            const position = (index - photoIndex + PHOTOS.length) % PHOTOS.length;
+            return (
+              <div
+                key={photo.src}
+                className="absolute inset-0 rounded-[30px] border border-white/10 bg-white/[0.04] p-2.5 shadow-[0_40px_80px_-30px_rgba(0,0,0,0.8)] backdrop-blur-[20px] transition-all duration-[1100ms] ease-glass"
+                style={{
+                  transform: STACK_TRANSFORMS[position],
+                  zIndex: 30 - position * 10,
+                  opacity: position === 2 ? 0.55 : 1,
+                }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={photo.src}
+                  alt={photo.alt}
+                  className="block h-full w-full rounded-[22px] object-cover"
+                />
+              </div>
+            );
+          })}
+          <div className="absolute bottom-[-44px] left-1/2 flex -translate-x-1/2 gap-2">
+            {PHOTOS.map((_, index) => (
+              <button
                 key={index}
-                onClick={() => setCurrentIndex(index)}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-                className={`h-2 rounded-full transition-all duration-300 ${
-                  index === currentIndex
-                    ? "w-8 bg-primary"
-                    : "w-2 bg-muted-foreground/30 hover:bg-muted-foreground/50"
-                }`}
+                onClick={() => setPhotoIndex(index)}
                 aria-label={`Ir a imagen ${index + 1}`}
+                className={`h-1.5 rounded-full border-0 p-0 transition-all duration-400 ${
+                  index === photoIndex ? "w-7 bg-foreground" : "w-1.5 bg-white/25"
+                }`}
               />
             ))}
           </div>
-        </motion.div>
+        </Reveal>
 
-        {/* Contenido */}
-        <motion.div
-          initial={{ opacity: 0, x: 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-          className="flex-1 flex flex-col justify-center md:justify-start text-center md:text-left space-y-4 md:space-y-6 order-1 md:order-2"
-        >
-          <div className="space-y-3">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground">
-              Sobre mí
-            </h2>
-            <div className="h-1 w-24 bg-gradient-to-r from-primary to-primary/30 rounded-full mx-auto md:mx-0"></div>
-          </div>
-
-          <p className="text-base sm:text-lg md:text-md text-muted-foreground leading-relaxed text-justify pt-4 md:pt-8">
-            Hola!, soy{" "}
-            <span className="text-foreground font-semibold">Gustavo Díaz</span>,
-            especializado en desarrollo Full Stack. Me enfoco en crear
-            soluciones escalables y sostenibles que resuelvan problemas reales,
-            aplicando buenas prácticas y manteniendo siempre al usuario final
-            como prioridad. Mi experiencia abarca desde el diseño hasta la
-            implementación, trabajando en equipo y adaptándome continuamente a
-            nuevas tecnologías y desafíos técnicos.
-          </p>
-
-          {/* Grid de highlights */}
-          <div className="hidden sm:grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-            {highlights.map((highlight, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                whileHover={{ scale: 1.02, y: -2 }}
-                className="group relative p-4 rounded-xl bg-gradient-to-br from-muted/50 to-muted/30 border border-border/50 hover:border-primary/30 transition-all duration-300 hover:shadow-lg hover:shadow-primary/5"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="p-2 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                    <highlight.icon className="w-5 h-5" />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-sm mb-1 text-foreground">
-                      {highlight.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {highlight.description}
-                    </p>
-                  </div>
-                </div>
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:to-transparent transition-all duration-300 pointer-events-none" />
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
-      </motion.div>
+        <div className="flex flex-col gap-6 lg:gap-[clamp(14px,2.6vh,24px)]">
+          <Reveal
+            as="h2"
+            className="m-0 text-[clamp(30px,3.6vw,50px)] leading-[1.1] font-normal tracking-[-0.03em] text-balance lg:text-[clamp(28px,min(3.4vw,5.6vh),50px)]"
+          >
+            Soy{" "}
+            <span className="font-serif tracking-[-0.01em] italic">Gustavo Díaz</span>,
+            Ingeniero en Informática y desarrollador Full Stack.
+          </Reveal>
+          <Reveal
+            as="p"
+            className="m-0 max-w-[58ch] text-[clamp(16px,1.3vw,18px)] leading-[1.75] text-pretty text-ink-1 lg:text-[clamp(15px,min(1.3vw,2.3vh),18px)] lg:leading-[1.7]"
+          >
+            Me gusta entender el problema antes de escribir la primera línea de
+            código. Disfruto el camino que va de una idea difusa a un sistema que
+            funciona: conversar con quienes lo van a usar, ordenar lo que
+            realmente necesitan y elegir una arquitectura que pueda crecer con
+            ellos.
+          </Reveal>
+          <Reveal
+            as="p"
+            className="m-0 max-w-[58ch] text-[clamp(16px,1.3vw,18px)] leading-[1.75] text-pretty text-ink-1 lg:text-[clamp(15px,min(1.3vw,2.3vh),18px)] lg:leading-[1.7]"
+          >
+            Me muevo con la misma comodidad en el backend que en la interfaz,
+            trabajo bien en equipo y aprendo rápido cuando un proyecto pide una
+            herramienta nueva. Lo que más me motiva son los proyectos con
+            impacto real en las personas.
+          </Reveal>
+        </div>
+      </div>
     </section>
   );
 };

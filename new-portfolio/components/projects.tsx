@@ -1,39 +1,56 @@
 "use client";
 
+import { useState } from "react";
 import { PROJECTS } from "./projects/data";
-import { ProjectCard } from "./projects/ProjectCard";
 import { ProjectsHeader } from "./projects/ProjectsHeader";
-import { motion } from "framer-motion";
+import { ProjectIndexRow } from "./projects/ProjectIndexRow";
+import { ProjectPanel } from "./projects/ProjectPanel";
 
 const Projects = () => {
+  const [activeProject, setActiveProject] = useState(0);
+  const [mediaIndex, setMediaIndex] = useState(0);
+
+  const mediaCount = PROJECTS[activeProject].media.length;
+
+  const selectProject = (index: number) => {
+    if (index === activeProject) return;
+    setActiveProject(index);
+    setMediaIndex(0);
+  };
+
+  const prevMedia = () => setMediaIndex((i) => (i - 1 + mediaCount) % mediaCount);
+  const nextMedia = () => setMediaIndex((i) => (i + 1) % mediaCount);
+
   return (
-    <section
-      id="projects"
-      className="relative py-16 sm:py-20 lg:py-28 xl:py-32 px-6 sm:px-8 lg:px-16 xl:px-60 overflow-hidden"
-    >
-      {/* Background Effects */}
-      <div className="absolute top-1/4 left-1/4 w-64 h-64 lg:w-96 lg:h-96 bg-primary/5 rounded-full blur-3xl" />
-      <div className="absolute bottom-1/4 right-1/4 w-64 h-64 lg:w-96 lg:h-96 bg-primary/5 rounded-full blur-3xl" />
+    <section id="projects" className="mx-auto max-w-[1280px] px-[clamp(20px,5vw,64px)] py-[88px] sm:py-[120px]">
+      <ProjectsHeader />
 
-      <div className="relative max-w-7xl mx-auto">
-        <ProjectsHeader />
-
-        {/* Projects Grid */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.6 }}
-          className="space-y-20 lg:space-y-24"
-        >
+      <div className="grid grid-cols-1 items-start gap-[clamp(24px,4vw,56px)] lg:grid-cols-2">
+        <div className="flex flex-col border-t border-white/[0.08]">
           {PROJECTS.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
+            <ProjectIndexRow
+              key={project.id}
+              project={project}
+              index={index}
+              active={index === activeProject}
+              mediaIndex={mediaIndex}
+              onSelect={() => selectProject(index)}
+              onPrevMedia={prevMedia}
+              onNextMedia={nextMedia}
+            />
           ))}
-        </motion.div>
+        </div>
+
+        <ProjectPanel
+          projects={PROJECTS}
+          activeProject={activeProject}
+          mediaIndex={mediaIndex}
+          onPrev={prevMedia}
+          onNext={nextMedia}
+        />
       </div>
     </section>
   );
 };
 
 export default Projects;
-
